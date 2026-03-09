@@ -1014,9 +1014,15 @@ autoScaleInit(document.querySelector('body'), {
 ## 更新日志
 
 ```text
+version: 3.0.11
+日期: 2026-03-09
+更新内容：
+1. 修复bug
+```
+
+```text
 version: 3.0.10
 日期: 2026-01-23
 更新内容：
 1. 修改NsSaturationLine文字字体
 ```
-
