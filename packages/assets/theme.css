@@ -1,0 +1,88 @@
+/* 剥离主题色，自定义全局变量 */
+:root {
+  /* video */
+  --video-font-size: 16px;
+  --video-split-icon-color: #000;
+  --video-split-icon-hover-color: #409eff;
+  --video-split-icon-active-color: #409eff;
+  --video-split-icon-focus-border-color: #6dffed;
+  --video-split-iconfont-color: #6dffed;
+  --video-tree-expand-icon-color: #6dffed;
+  --video-tree-bg-color: transparent;
+  --video-tree-text-color: #fff;
+  --video-tree-active-bg-color: rgba(255, 255, 255, 0.1);
+  --video-tree-selected-color: #0a7bff;
+  --video-tree-border-color: #c9ced1;
+  --video-ctrl-running: #0a7bff;
+  --video-text-color: #fff;
+  --video-margin: 2px;
+  --video-focus-border: 2px;
+  --video-margin-left: 10px;
+
+  --matrix-video-font-size: var(--video-font-size);
+  --matrix-video-split-icon-color: var(--video-split-icon-color);
+  --matrix-video-split-icon-hover-color:  var(--video-split-icon-hover-color);
+  --matrix-video-split-icon-active-color: var(--video-split-icon-active-color);
+  --matrix-video-split-icon-focus-border-color: var(--video-split-icon-focus-border-color);
+  --matrix-video-split-iconfont-color: var(--video-split-iconfont-color);
+  --matrix-video-tree-expand-icon-color: var(--video-tree-expand-icon-color);
+  --matrix-video-tree-bg-color: var(--video-tree-bg-color);
+  --matrix-video-tree-text-color: var(--video-tree-text-color);
+  --matrix-video-tree-active-bg-color: var(--video-tree-active-bg-color);
+  --matrix-video-tree-selected-color: var(--video-tree-selected-color);
+  --matrix-video-tree-border-color: var(--video-tree-border-color);
+  --matrix-video-ctrl-running: var(--video-ctrl-running);
+  --matrix-video-text-color: var(--video-text-color);
+  --matrix-video-margin: var(--video-margin);
+  --matrix-video-focus-border: var(--video-focus-border);
+  --matrix-video-margin-left: var(--video-margin-left);
+
+  /* 无数据图片 */
+  --matrix-empty-icon: url(./imgs/office-empty.png);
+  --matrix-empty-img: /imgs/stoneIcon.png;
+
+  /* 浸润线图标 */
+  --matrix-saturation-line-stoneicon: url(./imgs/stoneIcon.png);
+  --matrix-saturation-line-canvasdownfill: url(./imgs/canvas_down_fill.png);
+
+  /* 动态表单标题图标 */
+  --matrix-form-title-icon: url(./imgs/icon-detail-title.png);
+  --matrix-form-title-margin-bottom: 20px;
+  --matrix-form-title-width: 18px;
+  --matrix-form-title-height: 14px;
+  --matrix-form-title-gap: 6px;
+  --matrix-form-title-color: #212121;
+  --matrix-form-title-content-padding: 0 24px;
+  --matrix-form-border-color: #dfebf8;
+  --matrix-form-span-padding: 5px 10px;
+  --matrix-form-model-table-label-color: #f3f7fc;
+  --matrix-form-readonly-model-vertical-label-prefix-color: #0a7bff;
+  --matrix-form-model-vertical-padding: 0 20px;
+  --matrix-form-model-vertical-beffore-margin-right: 6px;
+  --matrix-form-row-item-margin-right: 16px;
+  --matrix-form-subrow-title-letter-spacing: 10px;
+
+  /* 弹出框 */
+  --matrix-dialog-bk-color: #fff;
+  --matrix-dialog-box-shandow: 0px 0px 10px 0px rgba(178, 190, 205, 0.2);
+  --matrix-dialog-padding-topBottom: 0;
+  --matrix-dialog-padding-leftRight: 0;
+  --matrix-dialog-border-radius: 10px;
+  --matrix-dialog-border: 1px solid #e9edf2;
+  --matrix-dialog-header-height: 48px;
+  --matrix-dialog-header-bg-color: #0a7bff;
+  --matrix-dialog-header-text-color: #fff;
+  --matrix-dialog-footer-height: 80px;
+  --matrix-dialog-footer-bg-color: #fff;
+  --matrix-dialog-footer-border-color: #cbe3ff;
+  --matrix-dialog-footer-VH: center;
+  --matrix-dialog-footer-cancel-color: #000;
+  --matrix-dialog-footer-cancel-bg-color: #fff;
+  --matrix-dialog-footer-cancel-border-color: #a5beda;
+  --matrix-dialog-footer-confirm-color: #fff;
+  --matrix-dialog-footer-confirm-bg-color: #0a7bff;
+  --matrix-dialog-footer-btn-width: 128px;
+  --matrix-dialog-footer-btn-height: 40px;
+  --matrix-dialog-footer-btn-space: 12px;
+  --matrix-dialog-footer-btn-radius: 6px;
+}
