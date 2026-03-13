@@ -61,6 +61,10 @@ const data = [
         name: 'form',
       },
       {
+        label: '表格+搜索条件',
+        name: 'nstable',
+      },
+      {
         label: '浸润线',
         name: 'saturationline',
       },

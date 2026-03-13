@@ -12,6 +12,7 @@ import SaturationLine from '@/views/SaturationLineDemo.vue'
 import Image from '@/views/ImageDemo.vue'
 import ReadMe from '@/views/ReadMe.vue'
 import MD from '@/views/MDDemo.vue'
+import NsTableDemo from '@/views/NsTableDemo/index.vue'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -80,6 +81,11 @@ const router = createRouter({
           path: '/saturationline',
           name: 'saturationline',
           component: SaturationLine,
+        },
+        {
+          path: '/nstable',
+          name: 'nstable',
+          component: NsTableDemo,
         }
       ],
     },

@@ -12,6 +12,7 @@ import NsMD from './components/NsMD'
 import NsSaturationLine from './components/NsSaturationLine'
 import NsImage from './components/NsImage'
 import NsImg from './components/NsImage'
+import { NsTableContainer, NsSearch, NsTable } from './components/NsTable'
 import VueKonva from 'vue-konva';
 
 import { registerDirective } from './directives'
@@ -23,7 +24,7 @@ import { NsDialog, setExternalApp, closeAllNsDialog } from './components/NsDialo
 export { NsDialog, closeAllNsDialog }
 
 // 导出组件
-export { NsVideo, NsExcel, NsPdf, NsWord, NsOffice, NsForm, NsFormTitle, NsSaturationLine, NsImage, NsImg, NsMD }
+export { NsVideo, NsExcel, NsPdf, NsWord, NsOffice, NsForm, NsFormTitle, NsSaturationLine, NsImage, NsImg, NsMD, NsTableContainer, NsSearch, NsTable }
 // 兼容老版本命名
 export { NsSaturationLine as NsSaturationline }
 
@@ -53,7 +54,10 @@ export const components = {
   NsSaturationline: NsSaturationLine,
   NsImage,
   NsImg,
-  NsMD
+  NsMD,
+  NsTableContainer, 
+  NsSearch, 
+  NsTable
 }
 
 const install = (app: App, _params = null) => {

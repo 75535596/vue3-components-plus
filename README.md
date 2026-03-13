@@ -1014,6 +1014,13 @@ autoScaleInit(document.querySelector('body'), {
 ## 更新日志
 
 ```text
+version: 3.0.12
+日期: 2026-03-13
+更新内容：
+1. 添加NsTableContainer带搜索条件的表格
+```
+
+```text
 version: 3.0.11
 日期: 2026-03-09
 更新内容：

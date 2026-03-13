@@ -41,7 +41,7 @@ export default defineConfig({
     outDir: 'dist',
     lib: {
       entry: fileURLToPath(new URL('./packages/index.ts', import.meta.url)),
-      name: 'MatrixComponents',
+      name: 'vue3-components-plus',
       fileName: 'vue3-components-plus',
     },
     rollupOptions: {
