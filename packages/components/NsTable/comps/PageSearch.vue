@@ -125,7 +125,7 @@
             :span="buttonSpan"
             class="search-buttons"
           >
-            <el-form-item label=" ">
+            <el-form-item label-width="0">
               <el-button type="primary" :icon="Search" @click="handleSearch">
                 查询
               </el-button>
@@ -151,7 +151,7 @@
           :span="buttonSpan"
           class="search-buttons"
         >
-          <el-form-item label=" ">
+          <el-form-item label-width="0">
             <el-button type="primary" :icon="Search" @click="handleSearch">
               查询
             </el-button>
@@ -350,6 +350,7 @@ onMounted(() => {
 .search-buttons {
   display: flex;
   align-items: center;
+  justify-content: flex-end;
 }
 
 .search-buttons :deep(.el-form-item) {

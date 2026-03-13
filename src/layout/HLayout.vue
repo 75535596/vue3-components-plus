@@ -105,6 +105,7 @@ const defaultProps = {
   }
   .center-view {
     flex: 1;
+    overflow: hidden;
   }
 }
 </style>

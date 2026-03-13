@@ -199,6 +199,9 @@ const tableRef = ref(null);
 // 内部分页状态管理
 const internalPagination = reactive(createPagination());
 
+// 跨页选择：存储待选中的 key 列表
+const pendingSelectionKeys = ref(new Set());
+
 // 监听外部传入的分页参数，同步到内部状态
 watch(
   () => props.currentPage,
@@ -237,9 +240,39 @@ const pageSizeModel = computed({
   }
 });
 
+// 监听 tableData 变化，自动匹配并选中当前页中存在的数据
+watch(
+  () => props.tableData,
+  () => {
+    // 如果有待选中的 key，尝试匹配当前页的数据
+    if (pendingSelectionKeys.value.size > 0 && tableRef.value) {
+      const rowKey = props.tableProps?.rowKey;
+      if (!rowKey) return;
+
+      // 使用 nextTick 确保表格已渲染
+      setTimeout(() => {
+        props.tableData.forEach(row => {
+          let key;
+          if (typeof rowKey === "function") {
+            key = rowKey(row);
+          } else {
+            key = row[rowKey];
+          }
+          // 如果当前行在待选中列表中，则选中它
+          if (pendingSelectionKeys.value.has(key)) {
+            tableRef.value?.toggleRowSelection?.(row, true);
+          }
+        });
+      }, 0);
+    }
+  },
+  { immediate: true }
+);
+
 // 事件处理
 const handleSearch = params => {
-  // 清空表格选中节点
+  // 清空表格选中节点和待选中列表
+  pendingSelectionKeys.value = new Set();
   if (tableRef.value) {
     tableRef.value.clearSelection?.();
   }
@@ -254,7 +287,8 @@ const handleSearch = params => {
 };
 
 const handleReset = () => {
-  // 清空表格选中节点
+  // 清空表格选中节点和待选中列表
+  pendingSelectionKeys.value = new Set();
   if (tableRef.value) {
     tableRef.value.clearSelection?.();
   }
@@ -402,13 +436,16 @@ defineExpose({
       console.warn("setSelectionKeys 需要配置 rowKey");
       return;
     }
-    const tableData = props.tableData;
+
+    // 存储待选中的 key 列表（用于跨页选择）
+    pendingSelectionKeys.value = new Set(keys);
 
     // 先清空当前选择
     tableRef.value?.clearSelection?.();
-    // 然后设置新的选择
+
+    // 然后设置新的选择（只选中当前页存在的数据）
     keys.forEach(key => {
-      const row = tableData.find(row => {
+      const row = props.tableData.find(row => {
         if (typeof rowKey === "function") {
           return rowKey(row) === key;
         } else {
@@ -438,9 +475,28 @@ defineExpose({
   },
   // 全选/取消全选
   selectAll: () => {
-    tableRef.value?.toggleAllSelection?.();
+    // 全选当前页所有数据
+    const rowKey = props.tableProps?.rowKey;
+    if (rowKey) {
+      // 将当前页所有数据的 key 添加到待选中列表
+      props.tableData.forEach(row => {
+        let key;
+        if (typeof rowKey === "function") {
+          key = rowKey(row);
+        } else {
+          key = row[rowKey];
+        }
+        pendingSelectionKeys.value.add(key);
+      });
+    }
+    // 选中当前页所有数据
+    props.tableData.forEach(row => {
+      tableRef.value?.toggleRowSelection?.(row, true);
+    });
   },
   clearAllSelection: () => {
+    // 清空待选中列表
+    pendingSelectionKeys.value = new Set();
     tableRef.value?.clearSelection?.();
   },
   // 表格操作相关方法

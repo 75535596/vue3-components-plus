@@ -4,6 +4,8 @@
 
 vue3-components-plus  是一个功能丰富的 Vue 3 企业级组件库，提供办公文档预览、动态表单、视频播放、权限控制等完整解决方案。
 
+**GitHub 源代码**: https://github.com/75535596/vue3-components-plus
+
 组件使用示例参考 `dist/ComponentDemo`
 
 ## 📸 部分组件预览
@@ -19,6 +21,10 @@ vue3-components-plus  是一个功能丰富的 Vue 3 企业级组件库，提供
 ### NsForm
 
 ![emh1eWluZw==](https://tc-cdn.processon.com/po/605c2da663768970077b1422-695db6559c0db14c9eab014d)
+
+### NsTableContainer
+
+![emh1eWluZw==](https://tc-cdn.processon.com/po/605c2da663768970077b1422-69b40ffd83c3c63c147141e1)
 
 ### NsOffice
 
@@ -1014,7 +1020,7 @@ autoScaleInit(document.querySelector('body'), {
 ## 更新日志
 
 ```text
-version: 3.0.12
+version: 3.0.13
 日期: 2026-03-13
 更新内容：
 1. 添加NsTableContainer带搜索条件的表格

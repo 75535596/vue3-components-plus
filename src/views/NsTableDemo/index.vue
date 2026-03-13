@@ -47,7 +47,7 @@
     <div class="selection-actions">
       <el-button @click="getSelectedRows">获取选中行</el-button>
       <el-button @click="getSelectedKeys">获取选中ID</el-button>
-      <el-button @click="selectRows([1, 3, 5])">选中ID为1,3,5的行</el-button>
+      <el-button @click="selectRows([1, 5, 21])">选中ID为1, 5, 21的行</el-button>
       <el-button @click="clearSelection">清空选择</el-button>
       <el-button @click="selectAll">全选</el-button>
       <el-button @click="checkSelection">检查选择状态</el-button>
@@ -377,16 +377,14 @@ const selectRows = (ids) => {
     containerRef.value.setSelectionKeys(ids)
 
     // 延迟检查选择结果
-    setTimeout(() => {
-      const selectedRows = containerRef.value.getSelectionRows()
-      const selectedKeys = containerRef.value.getSelectionKeys()
+    const selectedRows = containerRef.value.getSelectionRows()
+    const selectedKeys = containerRef.value.getSelectionKeys()
 
-      if (selectedRows.length > 0) {
-        ElMessage.success(`已选中ID为 ${ids.join(', ')} 的行，实际选中：${selectedKeys.join(', ')}`)
-      } else {
-        ElMessage.warning(`未选中任何行，请检查数据是否正确`)
-      }
-    }, 100)
+    if (selectedRows.length > 0) {
+      ElMessage.success(`已选中ID为 ${ids.join(', ')} 的行，实际选中：${selectedKeys.join(', ')}`)
+    } else {
+      ElMessage.warning(`未选中任何行，请检查数据是否正确`)
+    }
   } catch (error) {
     console.error('选择出错：', error)
     ElMessage.error(`选择失败：${error.message}`)

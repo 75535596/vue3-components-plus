@@ -18,11 +18,11 @@ app.use(ElementPlus, {
 
 // 本地(启用本地，还需要修改demo中的vue3-components-plus引入)
 //@ts-expect-error
-// import NsComponents from 'packages/index'
-// import 'packages/assets/main.css'
+import NsComponents from 'packages/index'
+import 'packages/assets/main.css'
 // nexus获取
-import NsComponents from 'vue3-components-plus'
-import 'vue3-components-plus/dist/vue3-components-plus.css'
+// import NsComponents from 'vue3-components-plus'
+// import 'vue3-components-plus/dist/vue3-components-plus.css'
 app.use(NsComponents)
 
 app.use(createPinia())
