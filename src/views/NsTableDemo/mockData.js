@@ -503,10 +503,19 @@ import { ElMessageBox } from "element-plus";
  * 根据搜索条件过滤用户数据
  * @param {Array} users - 用户数据数组
  * @param {Object} searchParams - 搜索参数对象
- * @param {Object} pagination - 分页参数对象 { currentPage, pageSize }
+ * @param {Object} pagination - 分页参数对象，支持自定义 key 名称
+ *   - 默认使用 currentPage 和 pageSize
+ *   - 也可传入自定义 key，如 { currentPage1: 1, pageSize1: 10 }
+ * @param {Object} keyConfig - 可选，自定义分页 key 配置
+ *   - pageNumberKey: 当前页码的 key 名称，默认 'currentPage'
+ *   - pageSizeKey: 每页条数的 key 名称，默认 'pageSize'
  * @returns {Object} { list: 过滤后的用户数据, total: 总数 }
  */
-export const filterUsers = (users, searchParams, pagination = {}) => {
+export const filterUsers = (users, searchParams, pagination = {}, keyConfig = {}) => {
+  // 默认 key 配置
+  const pageNumberKey = keyConfig.pageNumberKey || 'currentPage';
+  const pageSizeKey = keyConfig.pageSizeKey || 'pageSize';
+
   // 打印并弹出查询条件信息
   const queryInfo = {
     搜索条件: searchParams,
@@ -624,8 +633,10 @@ export const filterUsers = (users, searchParams, pagination = {}) => {
   // 计算总数
   const total = filteredData.length;
 
-  // 如果有分页参数，进行分页
-  const { currentPage = 1, pageSize = 10 } = pagination;
+  // 如果有分页参数，进行分页（支持自定义 key）
+  const currentPage = pagination[pageNumberKey] || 1;
+  const pageSize = pagination[pageSizeKey] || 10;
+
   if (currentPage && pageSize) {
     const start = (currentPage - 1) * pageSize;
     const end = start + pageSize;

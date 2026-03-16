@@ -3,6 +3,9 @@
     <!-- 使用 NsTableContainer 组件 -->
     <NsTableContainer
       ref="containerRef"
+      page-number-key="currentPage1"
+      page-size-key="pageSize1"
+      page-total-key="total1"
       :search-items="searchItems"
       :external-search-params="externalSearchParams"
       :search-props="{
@@ -359,16 +362,19 @@ const loadData = async () => {
     // 模拟网络延迟
     await new Promise((resolve) => setTimeout(resolve, 500))
 
-    // 从组件获取分页信息
+    // 从组件获取分页信息（使用自定义 key）
+    // getPagination() 返回的对象会根据 page-number-key 和 page-size-key 配置使用对应的 key
+    // 例如：{ total1: 0, currentPage1: 1, pageSize1: 10 }
     const pagination = containerRef.value?.getPagination() || {
-      currentPage: 1,
-      pageSize: 10,
+      currentPage1: 1,
+      pageSize1: 10,
     }
 
     // 使用 filterUsers 进行过滤和分页
-    const result = filterUsers(mockUsers, searchParams.value, {
-      currentPage: pagination.currentPage,
-      pageSize: pagination.pageSize,
+    // 直接传入 pagination 对象，filterUsers 会根据 keyConfig 解析对应的值
+    const result = filterUsers(mockUsers, searchParams.value, pagination, {
+      pageNumberKey: 'currentPage1',
+      pageSizeKey: 'pageSize1',
     })
 
     // 更新数据

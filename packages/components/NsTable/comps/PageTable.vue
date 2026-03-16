@@ -311,6 +311,19 @@ const props = defineProps({
   paginationLayout: {
     type: String,
     default: "total, sizes, prev, pager, next, jumper"
+  },
+  // 分页参数自定义 key 名称
+  pageNumberKey: {
+    type: String,
+    default: "currentPage"
+  },
+  pageSizeKey: {
+    type: String,
+    default: "pageSize"
+  },
+  pageTotalKey: {
+    type: String,
+    default: "total"
   }
 });
 
@@ -359,7 +372,10 @@ const definedProps = [
   "currentPage",
   "pageSize",
   "pageSizes",
-  "paginationLayout"
+  "paginationLayout",
+  "pageNumberKey",
+  "pageSizeKey",
+  "pageTotalKey"
 ];
 
 // 已定义的事件列表（需要排除的事件）
@@ -588,9 +604,9 @@ defineExpose({
     emit("update:pageSize", size);
   },
   getPagination: () => ({
-    currentPage: currentPageModel.value,
-    pageSize: pageSizeModel.value,
-    total: props.total
+    [props.pageTotalKey]: props.total,
+    [props.pageNumberKey]: currentPageModel.value,
+    [props.pageSizeKey]: pageSizeModel.value
   }),
   setPagination: (pagination) => {
     if (pagination.currentPage !== undefined) {

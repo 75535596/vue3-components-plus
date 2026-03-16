@@ -11,8 +11,6 @@
   使用示例：
   <PageContainer
     ref="containerRef"
-    v-model:current-page="pagination.currentPage"
-    v-model:page-size="pagination.pageSize"
     :search-items="searchItems"
     :external-search-params="externalSearchParams"
     :search-props="{
@@ -29,6 +27,9 @@
       rowKey: 'id',
       showPagination: true
     }"
+    page-number-key="currentPage"
+    page-size-key="pageSize"
+    page-total-key="total"
     @search="handleSearch"
     @reset="handleReset"
     @add="handleAdd"
@@ -43,11 +44,17 @@
     </template>
   </PageContainer>
 
+  Props 说明：
+  - page-number-key: 自定义当前页码的 key 名称，默认 'currentPage'
+  - page-size-key: 自定义每页条数的 key 名称，默认 'pageSize'
+  - page-total-key: 自定义总条数的 key 名称，默认 'total'
+
   暴露的方法：
   - getSearchFormData(): 获取搜索表单数据
   - setSearchFormData(data): 设置搜索表单数据
   - resetSearchForm(): 重置搜索表单
   - validateSearchForm(): 验证搜索表单
+  - getPagination(): 获取分页信息，返回对象使用自定义 key（如 { total: 0, currentPage: 1, pageSize: 10 }）
   - getSelectionRows(): 获取选中的行数据
   - getSelectionKeys(): 获取选中的行ID
   - setSelectionRows(rows): 设置选中的行
@@ -158,6 +165,19 @@ const props = defineProps({
   pageSize: {
     type: Number,
     default: null
+  },
+  // 分页参数自定义 key 名称
+  pageNumberKey: {
+    type: String,
+    default: "currentPage"
+  },
+  pageSizeKey: {
+    type: String,
+    default: "pageSize"
+  },
+  pageTotalKey: {
+    type: String,
+    default: "total"
   },
   // PageSearch 的其他属性
   searchProps: {
@@ -386,7 +406,14 @@ defineExpose({
   resetSearchForm: () => searchRef.value?.resetForm(),
   validateSearchForm: () => searchRef.value?.validate(),
   // 暴露内部分页状态
-  getPagination: () => ({ ...internalPagination, total: props.total }),
+  getPagination: () => {
+    // 使用自定义 key 构建返回对象
+    return {
+      [props.pageTotalKey]: props.total,
+      [props.pageNumberKey]: internalPagination.currentPage,
+      [props.pageSizeKey]: internalPagination.pageSize
+    };
+  },
   setPagination: (pagination) => {
     if (pagination.currentPage !== undefined) {
       internalPagination.currentPage = pagination.currentPage;

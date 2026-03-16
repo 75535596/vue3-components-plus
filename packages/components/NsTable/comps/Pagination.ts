@@ -8,12 +8,30 @@ export interface PaginationParams {
 }
 
 /**
+ * 分页 key 配置接口
+ */
+export interface PaginationKeyConfig {
+  totalKey?: string;
+  currentPageKey?: string;
+  pageSizeKey?: string;
+}
+
+/**
  * 默认分页参数
  */
 const DEFAULT_PAGINATION: PaginationParams = {
   total: 0,
   currentPage: 1,
   pageSize: 10
+};
+
+/**
+ * 默认分页 key 配置
+ */
+const DEFAULT_KEY_CONFIG: Required<PaginationKeyConfig> = {
+  totalKey: 'total',
+  currentPageKey: 'currentPage',
+  pageSizeKey: 'pageSize'
 };
 
 /**
@@ -28,6 +46,24 @@ export function createPagination(
   return {
     ...DEFAULT_PAGINATION,
     ...customParams
+  };
+}
+
+/**
+ * 创建自定义 key 的分页对象
+ * @param pagination 分页参数
+ * @param keyConfig 自定义 key 配置
+ * @returns 使用自定义 key 的分页对象
+ */
+export function createPaginationWithCustomKeys(
+  pagination: PaginationParams,
+  keyConfig?: PaginationKeyConfig
+): Record<string, number> {
+  const config = { ...DEFAULT_KEY_CONFIG, ...keyConfig };
+  return {
+    [config.totalKey]: pagination.total,
+    [config.currentPageKey]: pagination.currentPage,
+    [config.pageSizeKey]: pagination.pageSize
   };
 }
 
