@@ -1016,6 +1016,13 @@ autoScaleInit(document.querySelector('body'), {
 ## 更新日志
 
 ```text
+version: 3.0.15
+日期: 2026-03-16
+更新内容：
+1. NsTableContainer支持多级表头，通过 children 属性配置嵌套列
+```
+
+```text
 version: 3.0.14
 日期: 2026-03-16
 更新内容：

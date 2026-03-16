@@ -77,6 +77,38 @@ const tableData = ref([])
 const total = ref(0)
 
 const searchItems = ref([
+{
+    prop: "mounth",
+    label: "归属月",
+    span: 6,
+    component: ElSelect,
+    attrs: {
+      placeholder: "请选择归属月",
+      clearable: true,
+      options: [
+        {
+          value: "Option1",
+          label: "Option1"
+        },
+        {
+          value: "Option2",
+          label: "Option2",
+        },
+        {
+          value: "Option3",
+          label: "Option3"
+        },
+        {
+          value: "Option4",
+          label: "Option4",
+        },
+        {
+          value: "Option5",
+          label: "Option5"
+        }
+      ]
+    }
+  },
   {
     prop: 'username',
     label: '用户名',
@@ -198,45 +230,63 @@ const columns = ref([
     'class-name': 'id-column', // 自定义列样式类名
     resizable: false, // 禁止拖拽调整宽度
   },
-  { prop: 'avatar', label: '头像', slot: 'avatar', width: 80 },
+  // 多级表头示例：基本信息
   {
-    prop: 'username',
-    label: '用户名',
-    width: 120,
-    // 透传属性
-    'show-overflow-tooltip': true, // 内容过长时显示 tooltip
-    formatter: (row, column, cellValue) => {
-      return cellValue ? `@${cellValue}` : '-'
-    },
+    label: '基本信息',
+    children: [
+      { prop: 'avatar', label: '头像', slot: 'avatar', width: 80 },
+      {
+        prop: 'username',
+        label: '用户名',
+        width: 120,
+        // 透传属性
+        'show-overflow-tooltip': true, // 内容过长时显示 tooltip
+        formatter: (row, column, cellValue) => {
+          return cellValue ? `@${cellValue}` : '-'
+        },
+      },
+      {
+        prop: 'realName',
+        label: '真实姓名',
+        width: 120,
+        'min-width': 100, // 最小宽度
+      },
+      { prop: 'gender', label: '性别', slot: 'gender', width: 80 },
+    ]
   },
+  // 多级表头示例：组织信息
   {
-    prop: 'realName',
-    label: '真实姓名',
-    width: 120,
-    'min-width': 100, // 最小宽度
+    label: '组织信息',
+    children: [
+      { prop: 'department', label: '部门', slot: 'department', width: 120 },
+      { prop: 'status', label: '状态', slot: 'status', width: 100 },
+    ]
   },
-  { prop: 'gender', label: '性别', slot: 'gender', width: 80 },
-  { prop: 'department', label: '部门', slot: 'department', width: 120 },
-  { prop: 'status', label: '状态', slot: 'status', width: 100 },
+  // 多级表头示例：联系方式
   {
-    prop: 'phone',
-    label: '手机号',
-    width: 130,
-    'show-overflow-tooltip': true,
-  },
-  {
-    prop: 'email',
-    label: '邮箱',
-    minWidth: 180,
-    'show-overflow-tooltip': true,
-    filters: [
-      // 筛选配置
-      { text: 'Gmail', value: '@gmail.com' },
-      { text: 'QQ邮箱', value: '@qq.com' },
-    ],
-    'filter-method': (value, row) => {
-      return row.email.includes(value)
-    },
+    label: '联系方式',
+    children: [
+      {
+        prop: 'phone',
+        label: '手机号',
+        width: 130,
+        'show-overflow-tooltip': true,
+      },
+      {
+        prop: 'email',
+        label: '邮箱',
+        minWidth: 180,
+        'show-overflow-tooltip': true,
+        filters: [
+          // 筛选配置
+          { text: 'Gmail', value: '@gmail.com' },
+          { text: 'QQ邮箱', value: '@qq.com' },
+        ],
+        'filter-method': (value, row) => {
+          return row.email.includes(value)
+        },
+      },
+    ]
   },
   {
     prop: 'createTime',
