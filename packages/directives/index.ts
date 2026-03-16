@@ -298,15 +298,15 @@ function updatedCheck(el, binding) {
 /**
  * 处理数字输入的格式
  */
-function formatNumberInput(value, maxLength) {
+function formatNumberInput(value, maxLength, allowNegative = true) {
   let result = ''
   let hasMinus = false
   let hasDot = false
   for (let i = 0; i < value.length; i++) {
     const char = value[i]
-    // 1. 处理负号（只能出现在第一位，且只能有一个）
+    // 1. 处理负号（只有当允许负数时才能输入，且只能出现在第一位，且只能有一个）
     if (char === '-') {
-      if (i === 0 && !hasMinus) {
+      if (allowNegative && i === 0 && !hasMinus) {
         result += char
         hasMinus = true
       }
@@ -413,8 +413,11 @@ function formatRangeInput(value, config) {
     return result
   }
 
+  // 判断是否允许负数：只有当 min 小于 0 时才允许负号
+  const allowNegative = config.min !== null && config.min < 0
+
   // 首先使用数字格式化确保输入的是有效数字格式
-  let result = formatNumberInput(value, config.maxLength || 50)
+  let result = formatNumberInput(value, config.maxLength || 50, allowNegative)
 
   // 如果没有设置范围限制，直接返回格式化后的数字
   if (config.min === null && config.max === null) {

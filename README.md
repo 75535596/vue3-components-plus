@@ -213,12 +213,8 @@ app.use(NsComponents)
 
 ```bash
 # 1. 引入组件库
-pnpm i element-plus
-pnpm i vue3-components-plus -S --registry=http://199.10.9.178:8081/repository/npm-group/
-# 安装失败：pnpm i vue3-components-plus --registry=http://199.10.9.178:8081/repository/npm-hosted/
+pnpm i vue3-components-plus element-plus
 
-# 非初始化安装
-pnpm i -S --registry=http://199.10.9.178:8081/repository/npm-group/
 ```
 
 ```typescript
@@ -1018,6 +1014,13 @@ autoScaleInit(document.querySelector('body'), {
 ```
 
 ## 更新日志
+
+```text
+version: 3.0.14
+日期: 2026-03-16
+更新内容：
+1. 修复使用 v-length.range="{ min: 0, max: 10, maxLength: 10 }"指令时int:false，可输入负数的问题
+```
 
 ```text
 version: 3.0.13
