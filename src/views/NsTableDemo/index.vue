@@ -45,6 +45,30 @@
       <template #department="{ row }">
         <el-tag effect="plain">{{ getDepartmentText(row.department) }}</el-tag>
       </template>
+
+      <!-- 自定义删除按钮（使用 el-popconfirm） -->
+      <template #delete-action="{ row, $index }">
+        <el-popconfirm
+          title="确定要删除吗？"
+          :description="`确定要删除用户吗？`"
+          confirm-button-text="确定"
+          cancel-button-text="取消"
+          @confirm="handleDelete(row)"
+        >
+          <template #reference>
+            <el-button
+              type="danger"
+              size="small"
+              link
+              :icon="Delete"
+              :disabled="row.status === 0"
+              class="is-disabled-custom"
+            >
+              删除
+            </el-button>
+          </template>
+        </el-popconfirm>
+      </template>
     </NsTableContainer>
     <!-- 选择操作区域 -->
     <div class="selection-actions">
@@ -60,7 +84,7 @@
 
 <script setup lang="ts">
 import { Delete, Edit, View } from '@element-plus/icons-vue'
-import { ElDatePicker, ElInput, ElMessage, ElMessageBox, ElSelect, ElSwitch } from 'element-plus'
+import { ElDatePicker, ElInput, ElMessage, ElMessageBox, ElPopconfirm, ElSelect, ElSwitch } from 'element-plus'
 import { onMounted, ref } from 'vue'
 import { fetchDepartmentOptions, fetchStatusOptions, filterUsers, mockUsers } from './mockData.js'
 
@@ -328,7 +352,7 @@ const columns = ref([
         icon: Delete,
         show: true,
         disabled: (row) => row.status === 0, // 业务时不展示
-        handler: (row) => handleDelete(row),
+        slot: 'delete-action', // 使用插槽自定义删除按钮
       },
     ],
   },
@@ -490,15 +514,9 @@ const handleEdit = (row) => {
 
 // 删除
 const handleDelete = (row) => {
-  ElMessageBox.confirm(`确定要删除用户 "${row.username}" 吗？`, '删除确认', {
-    confirmButtonText: '确定',
-    cancelButtonText: '取消',
-    type: 'warning',
-  }).then(() => {
-    // 模拟删除
-    ElMessage.success('删除成功')
-    loadData()
-  })
+  // 模拟删除
+  ElMessage.success(`删除用户 "${row.username}" 成功`)
+  loadData()
 }
 
 // ==================== 生命周期 ====================
