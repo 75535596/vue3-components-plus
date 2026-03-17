@@ -73,94 +73,96 @@
 -->
 <template>
   <div class="page-table">
-    <!-- 表头操作区域 -->
-    <div class="table-header" v-if="showHeaderToolbar">
-      <div class="header-left">
-        <slot name="header-left" />
+    <slot name="page-content">
+      <!-- 表头操作区域 -->
+      <div class="table-header" v-if="showHeaderToolbar">
+        <div class="header-left">
+          <slot name="header-left" />
+        </div>
+        <div class="header-right">
+          <slot name="header-right">
+            <el-button
+              v-if="showAddButton"
+              type="primary"
+              :icon="Plus"
+              @click="handleAdd"
+            >
+              {{ addButtonText }}
+            </el-button>
+          </slot>
+        </div>
       </div>
-      <div class="header-right">
-        <slot name="header-right">
-          <el-button
-            v-if="showAddButton"
-            type="primary"
-            :icon="Plus"
-            @click="handleAdd"
-          >
-            {{ addButtonText }}
-          </el-button>
-        </slot>
-      </div>
-    </div>
 
-    <!-- 表格主体 -->
-    <el-table
-      ref="tableRef"
-      v-bind="tableAttrs"
-      :data="tableData"
-      :border="border"
-      :stripe="stripe"
-      :height="height"
-      :max-height="maxHeight"
-      :row-key="rowKey"
-      :default-expand-all="defaultExpandAll"
-      :highlight-current-row="highlightCurrentRow"
-      @selection-change="handleSelectionChange"
-      @sort-change="handleSortChange"
-      @row-click="handleRowClick"
-      v-loading="loading"
-    >
-      <!-- 选择列 -->
-      <el-table-column
-        v-if="showSelection"
-        type="selection"
-        width="55"
-        align="center"
-        :reserve-selection="!!rowKey"
-      />
-
-      <!-- 序号列 -->
-      <el-table-column
-        v-if="showIndex"
-        type="index"
-        label="序号"
-        width="60"
-        :index="getNumIndex"
-        align="center"
-      />
-
-      <!-- 动态列渲染（支持多级表头） -->
-      <TableColumn
-        v-for="column in columns"
-        :key="column.prop || column.type || column.label"
-        :column="column"
-        @link-click="handleLinkClick"
+      <!-- 表格主体 -->
+      <el-table
+        ref="tableRef"
+        v-bind="tableAttrs"
+        :data="tableData"
+        :border="border"
+        :stripe="stripe"
+        :height="height"
+        :max-height="maxHeight"
+        :row-key="rowKey"
+        :default-expand-all="defaultExpandAll"
+        :highlight-current-row="highlightCurrentRow"
+        @selection-change="handleSelectionChange"
+        @sort-change="handleSortChange"
+        @row-click="handleRowClick"
+        v-loading="loading"
       >
-        <!-- 透传所有插槽到 TableColumn 组件 -->
-        <template v-for="(_, slotName) in $slots" #[slotName]="slotData">
-          <slot :name="slotName" v-bind="slotData" />
+        <!-- 选择列 -->
+        <el-table-column
+          v-if="showSelection"
+          type="selection"
+          width="55"
+          align="center"
+          :reserve-selection="!!rowKey"
+        />
+
+        <!-- 序号列 -->
+        <el-table-column
+          v-if="showIndex"
+          type="index"
+          label="序号"
+          width="60"
+          :index="getNumIndex"
+          align="center"
+        />
+
+        <!-- 动态列渲染（支持多级表头） -->
+        <TableColumn
+          v-for="column in columns"
+          :key="column.prop || column.type || column.label"
+          :column="column"
+          @link-click="handleLinkClick"
+        >
+          <!-- 透传所有插槽到 TableColumn 组件 -->
+          <template v-for="(_, slotName) in $slots" #[slotName]="slotData">
+            <slot :name="slotName" v-bind="slotData" />
+          </template>
+        </TableColumn>
+
+        <!-- 空状态插槽 -->
+        <template #empty>
+          <slot name="empty">
+            <el-empty description="暂无数据" />
+          </slot>
         </template>
-      </TableColumn>
+      </el-table>
 
-      <!-- 空状态插槽 -->
-      <template #empty>
-        <slot name="empty">
-          <el-empty description="暂无数据" />
-        </slot>
-      </template>
-    </el-table>
-
-    <!-- 分页 -->
-    <div class="pagination-wrapper" v-if="showPagination">
-      <el-pagination
-        v-model:current-page="currentPageModel"
-        v-model:page-size="pageSizeModel"
-        :page-sizes="pageSizes"
-        :total="total"
-        :layout="paginationLayout"
-        @size-change="handleSizeChange"
-        @current-change="handleCurrentChange"
-      />
-    </div>
+      <!-- 分页 -->
+      <div class="pagination-wrapper" v-if="showPagination">
+        <el-pagination
+          v-model:current-page="currentPageModel"
+          v-model:page-size="pageSizeModel"
+          :page-sizes="pageSizes"
+          :total="total"
+          :layout="paginationLayout"
+          @size-change="handleSizeChange"
+          @current-change="handleCurrentChange"
+        />
+      </div>
+    </slot>
   </div>
 </template>
 

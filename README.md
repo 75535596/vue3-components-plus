@@ -1016,10 +1016,11 @@ autoScaleInit(document.querySelector('body'), {
 ## 更新日志
 
 ```text
-version: 3.0.18
+version: 3.0.20
 日期: 2026-03-17
 更新内容：
-1. NsTableContainer按钮禁用颜色修改
+1. NsTableContainer增加插槽#page-content，替换表格区域
+2. NsTableContainer按钮禁用颜色修改
 ```
 
 ```text

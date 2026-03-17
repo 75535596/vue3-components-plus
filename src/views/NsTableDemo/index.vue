@@ -27,6 +27,10 @@
       @add="handleAdd"
       @selection-change="handleSelectionChange"
     >
+      <!-- 替代表格插槽 -->
+      <!-- <template #page-content>
+        <div>替代表格插槽</div>
+      </template> -->
       <!-- 自定义状态列 -->
       <template #status="{ row }">
         <el-tag :type="getStatusType(row.status)">
@@ -84,7 +88,15 @@
 
 <script setup lang="ts">
 import { Delete, Edit, View } from '@element-plus/icons-vue'
-import { ElDatePicker, ElInput, ElMessage, ElMessageBox, ElPopconfirm, ElSelect, ElSwitch } from 'element-plus'
+import {
+  ElDatePicker,
+  ElInput,
+  ElMessage,
+  ElMessageBox,
+  ElPopconfirm,
+  ElSelect,
+  ElSwitch,
+} from 'element-plus'
 import { onMounted, ref } from 'vue'
 import { fetchDepartmentOptions, fetchStatusOptions, filterUsers, mockUsers } from './mockData.js'
 
@@ -104,37 +116,23 @@ const tableData = ref([])
 const total = ref(0)
 
 const searchItems = ref([
-{
-    prop: "mounth",
-    label: "归属月",
+  {
+    prop: 'mounth',
+    label: '归属月',
     span: 6,
     component: ElSelect,
     attrs: {
-      placeholder: "请选择归属月",
+      placeholder: '请选择归属月',
       clearable: true,
-      options: [
-        {
-          value: "Option1",
-          label: "Option1"
-        },
-        {
-          value: "Option2",
-          label: "Option2",
-        },
-        {
-          value: "Option3",
-          label: "Option3"
-        },
-        {
-          value: "Option4",
-          label: "Option4",
-        },
-        {
-          value: "Option5",
-          label: "Option5"
-        }
-      ]
-    }
+      type: 'month',
+    },
+    children: Array.from({ length: 12 }, (_, i) => {
+      return {
+        label: `${i + 1}月`,
+        value: String(i + 1),
+      }
+    }),
+    defaultValue: '3', // 默认选中3月
   },
   {
     prop: 'username',
@@ -279,7 +277,7 @@ const columns = ref([
         'min-width': 100, // 最小宽度
       },
       { prop: 'gender', label: '性别', slot: 'gender', width: 80 },
-    ]
+    ],
   },
   // 多级表头示例：组织信息
   {
@@ -287,7 +285,7 @@ const columns = ref([
     children: [
       { prop: 'department', label: '部门', slot: 'department', width: 120 },
       { prop: 'status', label: '状态', slot: 'status', width: 100 },
-    ]
+    ],
   },
   // 多级表头示例：联系方式
   {
@@ -313,7 +311,7 @@ const columns = ref([
           return row.email.includes(value)
         },
       },
-    ]
+    ],
   },
   {
     prop: 'createTime',
