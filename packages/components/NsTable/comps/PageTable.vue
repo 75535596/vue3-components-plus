@@ -671,7 +671,7 @@ defineExpose({
 :deep(.is-disabled-custom) {
   cursor: not-allowed !important;
   pointer-events: auto !important;
-  color: #9c9c9c;
+  color: #9c9c9c !important;
   /* filter: grayscale(100%); */
 }
 

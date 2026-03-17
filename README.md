@@ -1016,7 +1016,7 @@ autoScaleInit(document.querySelector('body'), {
 ## 更新日志
 
 ```text
-version: 3.0.17
+version: 3.0.18
 日期: 2026-03-17
 更新内容：
 1. NsTableContainer按钮禁用颜色修改
