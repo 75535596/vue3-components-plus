@@ -89,7 +89,6 @@ declare module 'vue3-components-plus' {
   import type { App } from 'vue'
 
   const components: {
-    NsVideo: any
     NsExcel: any
     NsPdf: any
     NsWord: any
@@ -195,7 +194,6 @@ declare module 'vue3-components-plus' {
     download,
     downLoadLocalFile,
     getTokenInfo,
-    NsVideo,
     NsExcel,
     NsPdf,
     NsWord,

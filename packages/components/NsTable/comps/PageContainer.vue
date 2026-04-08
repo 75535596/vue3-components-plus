@@ -114,7 +114,7 @@
 </template>
 
 <script setup>
-import { ref, computed, reactive, watch } from "vue";
+import { ref, computed, reactive, watch, nextTick } from "vue";
 import PageSearch from "./PageSearch.vue";
 import PageTable from "./PageTable.vue";
 import { createPagination } from "./Pagination";
@@ -386,12 +386,14 @@ const tableMethods = new Proxy(
 // 初始化搜索参数并触发查询
 // 用于在搜索条件准备好后（如异步获取下拉选项后）手动调用
 const initSearchAndLoad = () => {
-  if (searchRef.value && props.showSearch) {
-    // 获取 PageSearch 的初始表单数据（包含默认值和外部参数）
-    const initialFormData = searchRef.value.getFormData();
-    // 触发 search 事件，让父组件同步搜索参数并加载数据
-    emit("search", initialFormData);
-  }
+  nextTick(() => {
+    if (searchRef.value && props.showSearch) {
+      // 获取 PageSearch 的初始表单数据（包含默认值和外部参数）
+      const initialFormData = searchRef.value.getFormData();
+      // 触发 search 事件，让父组件同步搜索参数并加载数据
+      emit("search", initialFormData);
+    }
+  })  
 };
 
 // 暴露方法

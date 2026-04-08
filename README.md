@@ -10,10 +10,6 @@ vue3-components-plus  是一个功能丰富的 Vue 3 企业级组件库，提供
 
 ## 📸 部分组件预览
 
-### NsVideo
-
-![emh1eWluZw==](https://tc-cdn.processon.com/po/605c2da663768970077b1422-695db61dbffe264705f9b033)
-
 ### NsDialog
 
 ![emh1eWluZw==](https://tc-cdn.processon.com/po/605c2da663768970077b1422-695db64084aa6b1f690b64aa)
@@ -52,7 +48,6 @@ vue3-components-plus  是一个功能丰富的 Vue 3 企业级组件库，提供
 
 - ✅ **NsOffice**: 办公文档统一预览（Excel/PDF/Word）
 - ✅ **NsForm**: 动态表单生成和管理
-- ✅ **NsVideo**: 专业视频播放器
 - ✅ **NsDialog**: 灵活弹窗对话框
 - ✅ **NsPdf**: PDF文档预览和搜索
 - ✅ **NsExcel**: Excel预览和编辑
@@ -235,7 +230,7 @@ app.use(NsComponents)
 
 ## 📋 组件列表
 
-### 1. NsOffice - 办公文档统一预览组件
+### NsOffice - 办公文档统一预览组件
 
 支持格式：Excel(.xlsx/.xls)、PDF(.pdf)、Word(.docx/.doc)
 
@@ -268,7 +263,7 @@ officeRef.value?.refresh()
 </script>
 ```
 
-### 2. NsForm - 动态表单组件
+### NsForm - 动态表单组件
 
 ```vue
 <template>
@@ -306,164 +301,7 @@ const isValid = formRef.value?.validate()
 </script>
 ```
 
-### 3. NsVideo - 视频播放组件
-
-```vue
-<template>
-  <NsVideo 
-    ref="nsVideoRef" 
-    v-bind="videoData" 
-    v-on="videoEvent" 
-    @changeSplit='changeSplitHandler'
-  >
-    <!-- 自定义插槽 -->
-    <template #video-tree><span>左侧树-自定义插槽</span></template>
-    <template #video-player-head><span>播放区域头部-自定义插槽</span></template>
-    <template #video-player-view><span>播放区域主体-自定义插槽</span></template>
-    <template #video-player-foot><span>播放区域底部控制按钮-自定义插槽</span></template>
-    <template #video-player-cover><span>播放器canvas画布区域（除head+foot+tree区域）</span></template>
-  </NsVideo>
-</template>
-
-<script setup>
-import { ref } from 'vue'
-import { NsVideo } from 'vue3-components-plus'
-
-const nsVideoRef = ref()
-
-// 视频配置数据
-const videoData = {
-  // 显示视频关闭按钮
-  showClose: true,
-  // 是否支持全屏
-  hasFullScreen: true,
-  // 显示树
-  showTree: true,
-  // 树数据
-  treeData: [
-    {
-      id: '1',
-      label: '分组1',
-      children: [
-        {
-          videoModel: 'easyplayer',
-          id: '111',
-          label: '视频A',
-          url: 'ws://example.com/rtp/video.live.flv',
-          deviceId: 'a1',
-          channelId: 'a11',
-          icontype: 'on',
-        }
-      ]
-    }
-  ],
-  // 树节点对应的key
-  treeNodeKey: 'id',
-  // 树节点展开的key
-  treeExpandedKeys: ['11'],
-  // 树节点属性
-  treeOptions: {
-    icontype: 'icontype',
-    background: 'background',
-    videoUrlKey: 'url',
-    children: 'children',
-    label: 'label',
-  },
-  // 获取、设置打开的播放视频信息
-  videoInfos: [
-    {
-      index: 0,
-      url: 'https://example.com/video.flv',
-      info: {
-        videoModel: 'easyplayer',
-        id: 'video1',
-        url: 'https://example.com/video.flv',
-        deviceId: 'c1',
-        channelId: 'c11',
-      },
-    }
-  ],
-  // 单点播放
-  videoSingleUrl: false,
-  // 已经在播放的是否关闭后再点击打开
-  videoSingleClose: false,
-  // 播放模式: 1: 单击,2: 双击
-  videoPlayModel: 1,
-  // 分屏模式: 1: 单屏, 2: 四屏, 3: 九屏
-  videoSplitType: 1,
-  // 显示分屏按钮
-  showVideoSplit: true,
-  // 显示方向控制按钮
-  showVideoCtrls: false,
-  // 禁止控制按钮默认请求行为
-  stopVideoCtrlMethods: true,
-  // 单个视频错误最大次数
-  videoErrorMaxCount: 3,
-  // easyplayer配置
-  videoConfig: {
-    MSE: true,
-    WCS: true,
-    WASM: true,
-    WASMSIMD: true,
-    isLive: true,
-    hasAudio: false,
-    stretch: false
-  },
-  // 事件回调
-  treeClick: () => { console.log('点击树节点') },
-  treeDBClick: () => { console.log('双击树节点') },
-  treeRightMenu: () => { console.log('右键树菜单') },
-  treeExpand: () => { console.log('展开树节点') },
-  videoError: () => { console.log('视频错误') },
-}
-
-// 视频操作事件
-const videoEvent = {
-  videoOriginalInfo: (info) => { console.log('视频原始信息:', info) },
-  up: () => { console.log('向上移动') },
-  down: () => { console.log('向下移动') },
-  left: () => { console.log('向左移动') },
-  right: () => { console.log('向右移动') },
-  zoomin: () => { console.log('放大') },
-  zoomout: () => { console.log('缩小') },
-  stop: () => { console.log('停止') },
-  speed: () => { console.log('设置速度') },
-  speak: () => { console.log('开始说话') },
-  scan: () => { console.log('扫描') },
-  cruise: () => { console.log('巡航') },
-  call: () => { console.log('调用') },
-}
-
-// 获取原始视频信息
-const videoInfo = nsVideoRef.value?.getOriginalInfo()
-
-// 设置视频URL
-nsVideoRef.value?.setVideoUrl('ws://example.com/rtp/video.live.flv', false, 1, {
-  videoModel: 'easyplayer'
-})
-
-// 移除视频
-nsVideoRef.value?.removeVideo(1, true)
-
-// 分屏变化回调
-function changeSplitHandler(num) {
-  console.log('分屏模式:', num)
-}
-</script>
-```
-
-**前置准备：**
-
-1. 复制播放器资源：`js文件夹` 到 `public/` 目录中
-2. 复制播放器资源：`cdn文件夹` 到 `public/` 目录中
-3. 在 `index.html` 中引入：
-
-```html
-<script src="./js/EasyPlayer-pro.js"></script>
-<script src="./cdn/h5player/h5player.min.js"></script>
-```
-
-### 4. NsDialog - 弹出框组件
+### NsDialog - 弹出框组件
 
 ```javascript
 import { NsDialog, closeAllNsDialog } from 'vue3-components-plus'
@@ -533,7 +371,7 @@ NsDialog({
 closeAllNsDialog()
 ```
 
-### 5. NsPdf - PDF预览组件
+### NsPdf - PDF预览组件
 
 ```vue
 <template>
@@ -553,7 +391,7 @@ function searchKeyword() {
 </script>
 ```
 
-### 6. NsExcel - Excel预览/编辑组件
+### NsExcel - Excel预览/编辑组件
 
 ```vue
 <template>
@@ -561,7 +399,7 @@ function searchKeyword() {
 </template>
 ```
 
-### 7. NsWord - Word预览组件
+### NsWord - Word预览组件
 
 ```vue
 <template>
@@ -569,7 +407,7 @@ function searchKeyword() {
 </template>
 ```
 
-### 8. NsImage - 图片预览组件
+### NsImage - 图片预览组件
 
 ```vue
 <template>
@@ -577,7 +415,7 @@ function searchKeyword() {
 </template>
 ```
 
-### 9. NsMD - Markdown编辑器组件
+### NsMD - Markdown编辑器组件
 
 ```vue
 <template>
@@ -585,7 +423,7 @@ function searchKeyword() {
 </template>
 ```
 
-### 10. NsSaturationline - 饱和度线组件
+### NsSaturationline - 饱和度线组件
 
 ```vue
 <template>
@@ -593,7 +431,7 @@ function searchKeyword() {
 </template>
 ```
 
-### 11. NsAutoScreen - 自适应屏幕工具
+### NsAutoScreen - 自适应屏幕工具
 
 ```javascript
 import { autoScaleInit, sacle_x, sacle_y } from 'vue3-components-plus'
@@ -999,12 +837,11 @@ app.mount('#app')
 
 ```javascript
 // 按需引入组件和函数
-import { NsForm, NsVideo, get, post, autoScaleInit } from 'vue3-components-plus'
+import { NsForm, get, post, autoScaleInit } from 'vue3-components-plus'
 
 // 在组件中使用
 const app = createApp(App)
 app.use(NsForm)
-app.use(NsVideo)
 
 autoScaleInit(document.querySelector('body'), {
   designWidth: 1920,
@@ -1014,6 +851,14 @@ autoScaleInit(document.querySelector('body'), {
 ```
 
 ## 更新日志
+
+```text
+version: 3.0.21
+日期: 2026-03-17
+更新内容：
+1. NsTableContainer刷新后数据偶尔不更新的bug
+```
+
 
 ```text
 version: 3.0.20

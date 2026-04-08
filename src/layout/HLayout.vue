@@ -37,10 +37,6 @@ const data = [
         name: 'md',
       },
       {
-        label: '视频组件',
-        name: 'video',
-      },
-      {
         label: '弹出框组件',
         name: 'dialog',
       },
@@ -105,7 +101,6 @@ const defaultProps = {
   }
   .center-view {
     flex: 1;
-    overflow: hidden;
   }
 }
 </style>

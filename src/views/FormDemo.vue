@@ -66,6 +66,20 @@
             gapV="10px"
           ></NsForm>
         </NsFormTitle>
+        <NsFormTitle title="文件上传">
+          <NsForm
+            ref="rowUploadRef"
+            :readOnly="state.readOnly"
+            backgroundColor="#fff"
+            :model="state.model"
+            :rows="state.rowsUpload"
+            formPropKey="rowsUpload"
+            labelColor="#606266"
+            labelWidth="150"
+            gapH="20px"
+            gapV="10px"
+          ></NsForm>
+        </NsFormTitle>
       </el-form>
     </div>
   </div>
@@ -73,9 +87,9 @@
 
 <script setup lang="ts">
 import { h, onMounted, reactive, ref } from 'vue'
-import { cloneDeep } from 'lodash-es'
-import { nextTick } from 'vue'
 import { ElMessage } from 'element-plus'
+import type { UploadRequestOptions, UploadFile, UploadFiles } from 'element-plus'
+import { useFileUpload } from '../../packages/components/NsForm/uploadHook'
 
 // ------------全局的函数（不需要引入直接使用）------------
 // import { getAllFormKvData, getAllFormNodeByKey, getAllFormNodeRefByKey } from "vue3-components-plus";
@@ -115,8 +129,9 @@ const row1Ref = ref()
 const row2Ref = ref()
 const row3Ref = ref()
 const row4Ref = ref()
+const rowUploadRef = ref()
 
-const state = reactive({
+const state = reactive<any>({
   formData: {},
   readOnly: props.readOnly,
   model: props.readOnly ? '' : 'vertical',
@@ -481,10 +496,100 @@ const state = reactive({
       },
     ],
   ],
+  uploadFileList: [] as UploadFiles,
+  rowsUpload: [
+    [
+      {
+        key: 'upload_file',
+        label: '上传模型文件',
+        value: [],
+        component: 'ElUpload',
+        params: {
+          drag: true,
+          multiple: true,
+          limit: 2,
+          action: '#',
+          accept: '.txt,.md,.json,.jpg,.png,.pdf',
+          disabled: props.readOnly,
+          fileList: [],
+          httpRequest: mockUploadRequest,
+          rules: [
+            {
+              required: true,
+              message: '请上传模型或文档',
+              trigger: 'change',
+            },
+          ],
+        },
+        slots: {
+          default: () =>
+            h('div', { class: 'upload-trigger' }, [
+              h('p', { class: 'upload-title' }, '点击或拖拽上传'),
+              h('p', { class: 'upload-sub' }, '自动模拟上传成功，最多2个文件'),
+            ]),
+          tip: () => h('div', { class: 'el-upload__tip' }, '仅演示，文件信息会写入表单数据'),
+        },
+        events: {
+          success: handleUploadSuccess,
+          change: handleUploadChange,
+          remove: handleUploadRemove,
+        },
+      },
+    ],
+  ],
 })
 
-function changeHandler(v) {
-  ElMessage.info(v)
+state.rowsUpload[0][0].params.fileList = state.uploadFileList
+
+const uploadFieldKey = 'upload_file'
+const uploadFormKey = 'rowsUpload'
+const { handleRemoveFile, handleFileSuccessFile, handleCheckFileRequire } = useFileUpload(state)
+
+function mockUploadRequest(options: UploadRequestOptions) {
+  const { file, onSuccess, onError } = options
+  return new Promise((resolve, reject) => {
+    const timer = setTimeout(() => {
+      const response = {
+        code: 0,
+        data: {
+          fileName: file.name,
+          filePath: URL.createObjectURL(file),
+          fileSize: (file as any).size || (file as any).raw?.size || 0,
+        },
+        message: 'ok',
+      }
+      onSuccess?.(response as any)
+      resolve(response)
+    }, 400)
+
+    ;(options as any).abort = () => {
+      clearTimeout(timer)
+      const error = new Error('已取消') as any
+      onError?.(error)
+      reject(error)
+    }
+  })
+}
+
+function handleUploadSuccess(response: unknown, file: UploadFile, fileList: UploadFiles) {
+  state.uploadFileList.splice(0, state.uploadFileList.length, ...(fileList || []))
+  handleFileSuccessFile(response as any, file as any, fileList as any, uploadFieldKey, state.rowsUpload)
+  handleCheckFileRequire(state.rowsUpload, uploadFieldKey, formRef, uploadFormKey)
+}
+
+function handleUploadChange(_file: UploadFile, fileList: UploadFiles) {
+  state.uploadFileList.splice(0, state.uploadFileList.length, ...(fileList || []))
+  handleCheckFileRequire(state.rowsUpload, uploadFieldKey, formRef, uploadFormKey)
+}
+
+function handleUploadRemove(file: UploadFile, fileList: UploadFiles) {
+  state.uploadFileList.splice(0, state.uploadFileList.length, ...(fileList || []))
+  handleRemoveFile(file as any, fileList as any, uploadFieldKey, state.rowsUpload)
+  handleCheckFileRequire(state.rowsUpload, uploadFieldKey, formRef, uploadFormKey)
+}
+
+function changeHandler(v: boolean) {
+  ElMessage.info(v ? '启用' : '禁用')
 }
 
 function detAreaModeChange(value: any) {
@@ -527,7 +632,8 @@ async function getFormData() {
   const data2 = row2Ref.value?.getFormKvData?.()
   const data3 = row3Ref.value?.getFormKvData?.()
   const data4 = row4Ref.value?.getFormKvData?.()
-  const data = { ...data1, ...data2, ...data3, ...data4 }
+  const dataUpload = rowUploadRef.value?.getFormKvData?.()
+  const data = { ...data1, ...data2, ...data3, ...data4, ...dataUpload }
   state.formData = data
   ElMessage.success('表单校验成功')
   return data
@@ -542,6 +648,8 @@ async function resetFormData() {
   row2Ref.value?.resetForm?.()
   row3Ref.value?.resetForm?.()
   row4Ref.value?.resetForm?.()
+  rowUploadRef.value?.resetForm?.()
+  state.uploadFileList.splice(0, state.uploadFileList.length)
   setTimeout(() => {
     // 重置表单验证状态
     formRef.value?.clearValidate?.()
@@ -567,16 +675,20 @@ async function getDetail() {
       region: 'haidian,pudong', //['beijing', 'haidian'],
       department: ['company', 'tech', 'frontend'],
       single_level_cascader: 'shanghai',
+      upload_file: [],
     }
     row1Ref.value?.resetForm()
     row2Ref.value?.resetForm()
     row3Ref.value?.resetForm()
     row4Ref.value?.resetForm()
+    rowUploadRef.value?.resetForm()
+    state.uploadFileList.splice(0, state.uploadFileList.length)
     setTimeout(() => {
       row1Ref.value?.setFormData?.(res)
       row2Ref.value?.setFormData?.(res)
       row3Ref.value?.setFormData?.(res)
       row4Ref.value?.setFormData?.(res)
+      rowUploadRef.value?.setFormData?.(res)
     }, 10)
     return
     // 特殊处理
@@ -697,6 +809,21 @@ onMounted(() => {
     line-height: 1.5;
     max-height: 400px;
     overflow-y: auto;
+  }
+}
+
+.upload-trigger {
+  padding: 12px 8px;
+  text-align: center;
+  color: #606266;
+  .upload-title {
+    margin: 0 0 4px;
+    font-weight: 600;
+  }
+  .upload-sub {
+    margin: 0;
+    font-size: 12px;
+    color: #909399;
   }
 }
 

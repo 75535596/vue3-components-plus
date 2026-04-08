@@ -47,8 +47,8 @@ export default defineConfig({
     rollupOptions: {
       external: [
         'vue',
-        'element-plus',
         'pinia',
+        'element-plus',
         /^element-plus\/.*/,
         'axios',
         'vue-router',

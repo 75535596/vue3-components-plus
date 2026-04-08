@@ -13,7 +13,7 @@
   </div>
 </template>
 <script setup lang="ts">
-import VideoDemo from '@/views/VideoDemo.vue'
+import FormDemo from '@/views/FormDemo.vue'
 import { onMounted, onUnmounted, ref } from 'vue'
 
 // 扩展Window接口
@@ -37,7 +37,7 @@ function openDialog(data = {}) {
       class: 'xxx',
       title: '测试',
       // 任何组件添加 $emit('close') 时，会触发关闭弹出框事件
-      dom: VideoDemo, // 也可以通过异步方式：import("@/views/VideoDemo.vue") 和 () => import("@/views/VideoDemo.vue")
+      dom: FormDemo, // 也可以通过异步方式：import("@/views/FormDemo.vue") 和 () => import("@/views/FormDemo.vue")
       domCompleted: (domRef: any)=>{
         // dom加载完成或触发函数，domRef为dom实例可以执行defineExpose暴露出的函数
         console.log('组件加载完成，domRef:', domRef)

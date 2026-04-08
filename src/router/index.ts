@@ -1,6 +1,5 @@
 import { createRouter, createWebHistory } from 'vue-router'
 
-import video from '@/views/VideoDemo.vue'
 import dialog from '@/views/DialogDemo.vue'
 import excel from '@/views/ExcelDemo.vue'
 import pdf from '@/views/PdfDemo.vue'
@@ -31,11 +30,6 @@ const router = createRouter({
           path: '/md',
           name: 'md',
           component: MD,
-        },
-        {
-          path: '/video',
-          name: 'video',
-          component: video,
         },
         {
           path: '/dialog',

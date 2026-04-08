@@ -2,7 +2,6 @@ import './assets/main.css'
 
 import type { App } from 'vue'
 import * as ElementPlusIconsVue from '@element-plus/icons-vue'
-import NsVideo from './components/NsVideo'
 import NsExcel from './components/NsExcel'
 import NsPdf from './components/NsPdf'
 import NsWord from './components/NsWord'
@@ -24,7 +23,7 @@ import { NsDialog, setExternalApp, closeAllNsDialog } from './components/NsDialo
 export { NsDialog, closeAllNsDialog }
 
 // 导出组件
-export { NsVideo, NsExcel, NsPdf, NsWord, NsOffice, NsForm, NsFormTitle, NsSaturationLine, NsImage, NsImg, NsMD, NsTableContainer, NsSearch, NsTable }
+export { NsExcel, NsPdf, NsWord, NsOffice, NsForm, NsFormTitle, NsSaturationLine, NsImage, NsImg, NsMD, NsTableContainer, NsSearch, NsTable }
 // 兼容老版本命名
 export { NsSaturationLine as NsSaturationline }
 
@@ -43,7 +42,6 @@ export { getAllFormNodeByKey, getAllFormKvData, getAllFormNodeRefByKey } from '.
 import 'vue3-pdf-app/dist/icons/main.css'
 
 export const components = {
-  NsVideo,
   NsExcel,
   NsPdf,
   NsWord,

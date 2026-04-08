@@ -75,7 +75,7 @@ function openDialog(file) {
     {
       title: props.dialogTitle,
       // 任何组件添加 $emit('close') 时，会触发关闭弹出框事件
-      dom: ExcelComp, // 也可以通过异步方式：import("@/views/VideoDemo.vue") 和 () => import("@/views/VideoDemo.vue")
+      dom: ExcelComp, // 也可以通过异步方式：import("@/views/xx.vue") 和 () => import("@/views/xx.vue")
       option: {
         // dom对应的自定义组件props属性
         ...attrs,
