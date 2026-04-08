@@ -592,12 +592,12 @@ function changeHandler(v: boolean) {
   ElMessage.info(v ? '启用' : '禁用')
 }
 
-function detAreaModeChange(value: any) {
+function syncDetAreaField(mode: any) {
   if (state.rows3?.length && state.rows3[state.rows3.length - 1]?.[0]?.key === 'det_area_json') {
     state.rows3.pop()
   }
 
-  if (value === 'abnormal') {
+  if (mode === 'abnormal') {
     state.rows3.push([
       {
         key: 'det_area_json',
@@ -610,6 +610,10 @@ function detAreaModeChange(value: any) {
       { value: ' ' },
     ])
   }
+}
+
+function detAreaModeChange(value: any) {
+  syncDetAreaField(value)
 }
 
 function CustomUIs() {
@@ -649,6 +653,7 @@ async function resetFormData() {
   row3Ref.value?.resetForm?.()
   row4Ref.value?.resetForm?.()
   rowUploadRef.value?.resetForm?.()
+  syncDetAreaField('normal')
   state.uploadFileList.splice(0, state.uploadFileList.length)
   setTimeout(() => {
     // 重置表单验证状态
@@ -682,8 +687,10 @@ async function getDetail() {
     row3Ref.value?.resetForm()
     row4Ref.value?.resetForm()
     rowUploadRef.value?.resetForm()
+    syncDetAreaField('normal')
     state.uploadFileList.splice(0, state.uploadFileList.length)
     setTimeout(() => {
+      syncDetAreaField(res.det_area_mode)
       row1Ref.value?.setFormData?.(res)
       row2Ref.value?.setFormData?.(res)
       row3Ref.value?.setFormData?.(res)
