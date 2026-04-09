@@ -56,9 +56,6 @@ function openDialog(data = {}) {
       width: '800px', // 宽度, 整个弹出框的高度，非内容高度
       height: '450px', // 高度, 不配置则默认为内容高度
       dialogPadding: [10, 20], // 弹窗内padding
-      // 弹窗绝对定位
-      x: 250 + openIndex.value * 20,
-      y: 100 + openIndex.value * 20,
       // 设置函数时，则有放大和还原按钮，且按返回的对象设置弹出框。（会关闭拖动功能）
       // maxSize: function () {
       //   return { width: '100%', height: '800px', x: 0, y: 100 }
@@ -68,6 +65,16 @@ function openDialog(data = {}) {
       showFooter: true, // 默认显示底部按钮
       immediately: false, // true立即取消弹出框, false异步请求后取消弹出框，默认false
       draggable: true, // 是否可拖拽，默认false
+      // 最大化方法
+      maxSize: () => ({
+        width: '100%',
+        height: '100%',
+        x: 0,
+        y: 0
+      }),
+      // 弹窗绝对定位
+      x: 'calc(50% - 400px)',
+      y: 'calc(50% - 225px)',
       // 底部确认按钮回调事件
       confirm: async (closeFn: any, componentRef: any, footerLoading: any) => {
         // 2.componentRef可以调用内部函数，前提需要defineExpose

@@ -1,11 +1,11 @@
 <template>
   <!-- 对话框组件，具有自定义头部、内容和底部 -->
   <el-dialog
-    :class="['dialog-plus', props.class, { 'dialog-absolute-position': isAbsolutePosition }]"
+    :class="['dialog-plus', props.class, { 'dialog-absolute-position': isAbsolutePosition, 'dialog-maximized': isMaximized }]"
     :modal-class="['dialog-plus-modal', props.class ? props.class + '-modal' : '']"
     :modal="props.modal"
     :modal-penetrable="(props.modal+'') === 'false'"
-    :draggable="props.draggable && !props.maxSize"
+    :draggable="props.draggable"
     :close-on-click-modal="props.closeOnClickModal"
     align-center
     v-model="visible"
@@ -228,7 +228,6 @@ const props = defineProps({
     type: Function,
     default: null,
   },
-  // 有放大按钮时不允许拖动，避免位置偏差
   draggable: {
     type: Boolean,
     default: false,
@@ -246,7 +245,6 @@ const props = defineProps({
     type: [Number, String],
     default: null,
   },
-  // 有放大按钮时不允许拖动，避免位置偏差
   maxSize: {
     type: Function,
     default: null,
@@ -436,11 +434,19 @@ onMounted(() => {
 watch(
   () => currentHeight.value,
   (newVal) => {
-    if (newVal) {
+    if (newVal !== null && newVal !== undefined && newVal !== '') {
       try {
-        const topBottom = tbPadding.value.replace('px', '')
-        _height.value = parseFloat(newVal + '') - parseFloat(topBottom) + 'px'
-        _centerHeight.value = `calc(100% - ${parseFloat(topBottom) * 2}px)`
+        const topBottom = parseFloat((tbPadding.value || '0').toString().replace('px', '')) || 0
+        const heightValue = String(newVal).trim()
+
+        if (typeof newVal === 'number' || /^\d+(\.\d+)?(px)?$/.test(heightValue)) {
+          const baseHeight = parseFloat(heightValue)
+          _height.value = `${baseHeight - topBottom}px`
+        } else {
+          _height.value = `calc(${heightValue} - ${topBottom}px)`
+        }
+
+        _centerHeight.value = `calc(100% - ${topBottom * 2}px)`
         return
       } catch (error) {
         console.log(error)
@@ -618,6 +624,11 @@ const events = {
     margin: 0 !important;
     left: v-bind('dialogPosition.left');
     top: v-bind('dialogPosition.top');
+  }
+
+  // 最大化时屏蔽拖拽产生的transform偏移，确保使用maxSize的x/y
+  &.dialog-maximized {
+    transform: none !important;
   }
 
   .el-dialog__header {
